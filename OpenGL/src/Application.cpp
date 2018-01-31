@@ -6,6 +6,8 @@
 #include <sstream>
 
 #include "Renderer.h"
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
 
 struct ShaderProgramSource
 {
@@ -135,18 +137,24 @@ int main(void)
 	GLCall(glGenVertexArrays(1, &vao));
 	GLCall(glBindVertexArray(vao));
 
-	unsigned int buffer;
-	glGenBuffers(1, &buffer);
-	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), positions, GL_STATIC_DRAW);
+	VertexBuffer vb(positions, 4 * 2 * sizeof(float));
+
+	//Replaced with above line
+	//unsigned int buffer;
+	//glgenbuffers(1, &buffer);
+	//glbindbuffer(gl_array_buffer, buffer);
+	//glbufferdata(gl_array_buffer, 4 * 2 * sizeof(float), positions, gl_static_draw);
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
 
-	unsigned int ibo;
+
+	IndexBuffer ib(indices, 6);
+	//Replaced with above line
+	/*unsigned int ibo;
 	glGenBuffers(1, &ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW);*/
 
 	ShaderProgramSource source = ParseShader("res/shaders/Basic.shader");
 
@@ -180,7 +188,8 @@ int main(void)
 
 
 		GLCall(glBindVertexArray(vao));
-		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
+		ib.Bind();
+		//GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
 
 
 		
